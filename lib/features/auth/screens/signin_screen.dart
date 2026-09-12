@@ -15,35 +15,22 @@ class SigninScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Scaffold(
-    backgroundColor: AppColors.surface,
-    body: SafeArea(child: _SignInView()),
-  );
+        backgroundColor: AppColors.surface,
+        body: SafeArea(child: _SignInView()),
+      );
 }
 
-class _SignInView extends StatefulWidget {
+class _SignInView extends StatelessWidget {
   const _SignInView();
 
   @override
-  State<_SignInView> createState() => _SignInViewState();
-}
-
-class _SignInViewState extends State<_SignInView> {
-  final _controller = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  String? _errorText;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final controller = TextEditingController();
+
     return BlocBuilder<SignInCubit, SignInState>(
       builder: (context, state) {
         return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(16), vertical: AppResponsive.h(16)),
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(24), vertical: AppResponsive.h(32)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -64,6 +51,7 @@ class _SignInViewState extends State<_SignInView> {
                     dotColor: AppColors.success,
                     textColor: AppColors.success,
                     borderColor: AppColors.transparent,
+
                   ),
                 ],
               ),
@@ -72,23 +60,18 @@ class _SignInViewState extends State<_SignInView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppFormFields.phoneField(
-                    controller: _controller,
+                    controller: controller,
                     isValid: state.isPhoneValid,
                     hintText: '98765 43210',
-                    hasError: _errorText != null,
-                    onChanged: (v) {
-                      context.read<SignInCubit>().onPhoneChanged(v);
-                      if (_errorText != null) {
-                        setState(() => _errorText = null);
-                      }
-                    },
+                    onChanged: (v) => context.read<SignInCubit>().onPhoneChanged(v),
                     validator: null,
+                    hasError: state.errorText != null,
                   ),
-                  if (_errorText != null) ...[
+                  if (state.errorText != null) ...[
                     AppConstants.vSM,
                     Padding(
                       padding: EdgeInsets.only(left: AppResponsive.w(14)),
-                      child: Text(_errorText!, style: AppTextStyles.labelS(color: AppColors.danger)),
+                      child: Text(state.errorText!, style: AppTextStyles.labelS(color: AppColors.danger)),
                     ),
                   ],
                 ],
@@ -104,7 +87,10 @@ class _SignInViewState extends State<_SignInView> {
                 enabled: state.isPhoneValid,
                 onTap: () {
                   if (!state.isPhoneValid) {
-                    setState(() => _errorText = AppValidators.phone(_controller.text));
+                    final error = AppValidators.phone(controller.text);
+                    if (error != null) {
+                      context.read<SignInCubit>().showError(error);
+                    }
                     return;
                   }
                   // TODO: trigger OTP send
@@ -124,7 +110,12 @@ class _SignInViewState extends State<_SignInView> {
                       ],
                     ),
                   ),
-                  AppButtons.textButton(label: 'Forgot Password?', onTap: () {}, foregroundColor: AppColors.primary, underline: true),
+                  AppButtons.textButton(
+                    label: 'Forgot Password?',
+                    onTap: () {},
+                    foregroundColor: AppColors.primary,
+                    underline: true,
+                  ),
                 ],
               ),
             ],

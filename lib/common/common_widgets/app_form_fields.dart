@@ -204,17 +204,11 @@ class _AppPhoneField extends StatelessWidget {
         // ── Border styling ────────────────────────────────────
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppResponsive.r(10)),
-          borderSide: BorderSide(
-            color: hasError ? AppColors.danger : AppColors.border,
-            width: 1,
-          ),
+          borderSide: BorderSide(color: hasError ? AppColors.danger : AppColors.border, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppResponsive.r(10)),
-          borderSide: BorderSide(
-            color: hasError ? AppColors.danger : AppColors.primary,
-            width: 1.5,
-          ),
+          borderSide: BorderSide(color: hasError ? AppColors.danger : AppColors.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppResponsive.r(10)),
@@ -334,7 +328,7 @@ class _AppFormChip extends StatelessWidget {
     final effectiveSpacing = spacing ?? 4.0;
 
     // Text style with default
-    final defaultTextStyle = AppTextStyles.labelS(color: effectiveTextColor);
+    final defaultTextStyle = AppTextStyles.labelS(color: effectiveTextColor, fontSize: 8);
     final effectiveTextStyle = textStyle ?? defaultTextStyle;
 
     return Container(

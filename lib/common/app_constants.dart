@@ -41,4 +41,13 @@ class AppConstants {
 
   /// 32 dp horizontal gap
   static SizedBox get hXL => SizedBox(width: AppResponsive.w(xl));
+
+  // ── Keyboard & Focus Management ─────────────────────────────
+  /// Closes the keyboard and removes focus from all text fields
+  ///
+  /// Usage:
+  /// ```dart
+  /// AppConstants.closeKeyboard(context);
+  /// ```
+  static void closeKeyboard(BuildContext context) => FocusScope.of(context).unfocus();
 }
