@@ -104,19 +104,23 @@ abstract final class AppFormFields {
   /// )
   /// ```
   static Widget phoneField({
+    Key? key,
     required TextEditingController controller,
     required bool isValid,
     String? hintText,
     ValueChanged<String>? onChanged,
     FormFieldValidator<String>? validator,
+    FocusNode? focusNode,
     bool readOnly = false,
     bool enabled = true,
   }) => _AppPhoneField(
+    key: key,
     controller: controller,
     isValid: isValid,
     hintText: hintText,
     onChanged: onChanged,
     validator: validator,
+    focusNode: focusNode,
     readOnly: readOnly,
     enabled: enabled,
   );
@@ -127,11 +131,13 @@ abstract final class AppFormFields {
 // ─────────────────────────────────────────────────────────────
 class _AppPhoneField extends StatelessWidget {
   const _AppPhoneField({
+    super.key,
     required this.controller,
     required this.isValid,
     this.hintText,
     required this.onChanged,
     required this.validator,
+    this.focusNode,
     required this.readOnly,
     required this.enabled,
   });
@@ -141,6 +147,7 @@ class _AppPhoneField extends StatelessWidget {
   final String? hintText;
   final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
+  final FocusNode? focusNode;
   final bool readOnly;
   final bool enabled;
 
@@ -148,6 +155,7 @@ class _AppPhoneField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      focusNode: focusNode,
       readOnly: readOnly,
       enabled: enabled,
       keyboardType: TextInputType.phone,

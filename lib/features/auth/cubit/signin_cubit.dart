@@ -10,18 +10,26 @@ class SignInState extends Equatable {
   const SignInState({
     this.phone = '',
     this.isPhoneValid = false,
+    this.autoValidate = false,
   });
 
   final String phone;
   final bool isPhoneValid;
+  final bool autoValidate;
 
-  SignInState copyWith({String? phone, bool? isPhoneValid}) => SignInState(
+  SignInState copyWith({
+    String? phone,
+    bool? isPhoneValid,
+    bool? autoValidate,
+  }) =>
+      SignInState(
         phone: phone ?? this.phone,
         isPhoneValid: isPhoneValid ?? this.isPhoneValid,
+        autoValidate: autoValidate ?? this.autoValidate,
       );
 
   @override
-  List<Object> get props => [phone, isPhoneValid];
+  List<Object> get props => [phone, isPhoneValid, autoValidate];
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -34,6 +42,9 @@ class SignInCubit extends Cubit<SignInState> {
         state.copyWith(
           phone: value,
           isPhoneValid: AppValidators.phone(value) == null,
+          autoValidate: false, // Clear validation error when user types
         ),
       );
+
+  void enableValidation() => emit(state.copyWith(autoValidate: true));
 }

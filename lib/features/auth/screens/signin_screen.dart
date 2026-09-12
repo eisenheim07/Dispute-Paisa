@@ -15,129 +15,127 @@ class SigninScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Scaffold(
-    backgroundColor: AppColors.surface,
-    body: SafeArea(child: _SignInView()),
-  );
+        backgroundColor: AppColors.surface,
+        body: SafeArea(child: _SignInView()),
+      );
 }
 
-// ─────────────────────────────────────────────────────────────
-// View
-// ─────────────────────────────────────────────────────────────
-class _SignInView extends StatelessWidget {
+class _SignInView extends StatefulWidget {
   const _SignInView();
 
   @override
+  State<_SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<_SignInView> {
+  final _controller = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String? _errorText;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final controller = TextEditingController();
-    final formKey = GlobalKey<FormState>();
-
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(24), vertical: AppResponsive.h(32)),
-      child: Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ── Title ─────────────────────────────────────────
-            Text('Welcome to ResolveX', style: AppTextStyles.headingXL(color: AppColors.textPrimary)),
-            AppConstants.vSM,
-            Text(
-              'Instant bank lien de-freeze, cyber dispute escalation, and legal grievance resolution.',
-              style: AppTextStyles.bodyM(color: AppColors.textSecondary),
-            ),
-
-            AppConstants.vXL,
-
-            // ── Mobile Number label row ───────────────────────
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppFormFields.label(
-                  text: 'Mobile Number',
-                  isRequired: true,
-                  style: AppTextStyles.labelM(color: AppColors.textPrimary),
-                ),
-                AppFormFields.chip(
-                  text: 'Auto-validates',
-                  showDot: true,
-                  dotColor: AppColors.success,
-                  textColor: AppColors.success,
-                  borderColor: AppColors.transparent,
-                ),
-              ],
-            ),
-
-            AppConstants.vMD,
-
-            // ── Phone field ───────────────────────────────────
-            BlocBuilder<SignInCubit, SignInState>(
-              buildWhen: (prev, curr) => prev.isPhoneValid != curr.isPhoneValid,
-              builder: (context, state) => AppFormFields.phoneField(
-                controller: controller,
-                isValid: state.isPhoneValid,
-                hintText: '98765 43210',
-                onChanged: (v) => context.read<SignInCubit>().onPhoneChanged(v),
-                validator: AppValidators.phone,
+    return BlocBuilder<SignInCubit, SignInState>(
+      builder: (context, state) {
+        return SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(24), vertical: AppResponsive.h(32)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Welcome to ResolveX', style: AppTextStyles.headingXL(color: AppColors.textPrimary)),
+              AppConstants.vSM,
+              Text(
+                'Instant bank lien de-freeze, cyber dispute escalation, and legal grievance resolution.',
+                style: AppTextStyles.bodyM(color: AppColors.textSecondary),
               ),
-            ),
-
-            AppConstants.vSM,
-
-            // ── Helper text ───────────────────────────────────
-            AppFormFields.hint(
-              text: 'Standard SMS rates or WhatsApp verification apply',
-              style: AppTextStyles.bodyS(color: AppColors.textMuted, fontSize: 10),
-            ),
-
-            AppConstants.vXL,
-
-            // ── Get Verification OTP button ───────────────────
-            AppButtons.primaryButton(
-              label: 'Get Verification OTP',
-              icon: Icons.arrow_forward_rounded,
-              iconPosition: IconPosition.right,
-              height: 54,
-              onTap: () {
-                if (formKey.currentState?.validate() ?? false) {
-                  // TODO: trigger OTP send
-                }
-              },
-            ),
-
-            AppConstants.vXL,
-
-            // ── Bottom row — Biometric + Forgot Password ──────
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Biometric Login
-                GestureDetector(
-                  onTap: () {
-                    // TODO: biometric auth
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.fingerprint_rounded, size: AppResponsive.r(26), color: AppColors.textSecondary),
-                      AppConstants.hMD,
-                      Text('Biometric Login', style: AppTextStyles.bodyM(color: AppColors.textSecondary)),
-                    ],
+              AppConstants.vXL,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppFormFields.label(text: 'Mobile Number', isRequired: true),
+                  AppFormFields.chip(
+                    text: 'Auto-validates',
+                    showDot: true,
+                    dotColor: AppColors.success,
+                    textColor: AppColors.success,
+                    backgroundColor: AppColors.transparent,
+                    borderColor: AppColors.transparent,
                   ),
-                ),
-
-                // Forgot Password
-                AppButtons.textButton(
-                  label: 'Forgot Password?',
-                  onTap: () {
-                    // TODO: forgot password flow
-                  },
-                  foregroundColor: AppColors.primary,
-                  underline: true,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+                ],
+              ),
+              AppConstants.vMD,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppFormFields.phoneField(
+                    controller: _controller,
+                    isValid: state.isPhoneValid,
+                    hintText: '98765 43210',
+                    onChanged: (v) {
+                      context.read<SignInCubit>().onPhoneChanged(v);
+                      if (_errorText != null) {
+                        setState(() => _errorText = null);
+                      }
+                    },
+                    validator: null,
+                  ),
+                  if (_errorText != null) ...[
+                    AppConstants.vSM,
+                    Padding(
+                      padding: EdgeInsets.only(left: AppResponsive.w(14)),
+                      child: Text(_errorText!, style: AppTextStyles.labelS(color: AppColors.danger)),
+                    ),
+                  ],
+                ],
+              ),
+              AppConstants.vSM,
+              AppFormFields.hint(text: 'Standard SMS rates or WhatsApp verification apply'),
+              AppConstants.vXL,
+              AppButtons.primaryButton(
+                label: 'Get Verification OTP',
+                icon: Icons.arrow_forward_rounded,
+                iconPosition: IconPosition.right,
+                height: 54,
+                enabled: state.isPhoneValid,
+                onTap: () {
+                  if (!state.isPhoneValid) {
+                    setState(() => _errorText = AppValidators.phone(_controller.text));
+                    return;
+                  }
+                  // TODO: trigger OTP send
+                },
+              ),
+              AppConstants.vXL,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: Row(
+                      children: [
+                        Icon(Icons.fingerprint_rounded, size: AppResponsive.r(26), color: AppColors.textSecondary),
+                        AppConstants.hMD,
+                        Text('Biometric Login', style: AppTextStyles.bodyM(color: AppColors.textSecondary)),
+                      ],
+                    ),
+                  ),
+                  AppButtons.textButton(
+                    label: 'Forgot Password?',
+                    onTap: () {},
+                    foregroundColor: AppColors.primary,
+                    underline: true,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

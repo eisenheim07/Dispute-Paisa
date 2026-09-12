@@ -184,12 +184,13 @@ class _AppBaseButton extends StatelessWidget {
   final bool enabled;
   final bool hasShadow;
 
-  bool get _isDisabled => !enabled || onTap == null;
+  bool get _isDisabled => !enabled;
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBg = _isDisabled ? AppColors.neutral300 : backgroundColor;
-    final effectiveFg = _isDisabled ? AppColors.textDisabled : foregroundColor;
+    // When disabled, use lighter shade of the same color (30% opacity)
+    final effectiveBg = _isDisabled ? backgroundColor.withOpacity(0.3) : backgroundColor;
+    final effectiveFg = _isDisabled ? foregroundColor.withOpacity(0.5) : foregroundColor;
     final radius = BorderRadius.circular(AppResponsive.r(borderRadius));
 
     // Handle width: double.infinity means match parent, null means wrap content
@@ -208,7 +209,7 @@ class _AppBaseButton extends StatelessWidget {
         color: Colors.transparent,
         borderRadius: radius,
         child: InkWell(
-          onTap: _isDisabled ? null : onTap,
+          onTap: onTap, // Always keep onTap, don't disable it
           borderRadius: radius,
           splashColor: effectiveFg.withOpacity(0.15),
           highlightColor: effectiveFg.withOpacity(0.08),
@@ -220,12 +221,7 @@ class _AppBaseButton extends StatelessWidget {
       ),
     );
 
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds: 150),
-      opacity: _isDisabled ? 0.6 : 1.0,
-      // When width is null wrap with IntrinsicWidth so the button wraps content
-      child: width == null ? IntrinsicWidth(child: button) : button,
-    );
+    return width == null ? IntrinsicWidth(child: button) : button;
   }
 
   Widget _content(Color fg) {
