@@ -271,7 +271,7 @@ class _AppFormHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultStyle = AppTextStyles.bodyS(color: AppColors.textMuted);
+    final defaultStyle = AppTextStyles.bodyS(color: AppColors.textMuted, fontSize: 10);
     final effectiveStyle = style ?? defaultStyle;
 
     return Text(text, style: effectiveStyle);

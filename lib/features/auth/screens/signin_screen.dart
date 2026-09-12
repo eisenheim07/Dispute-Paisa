@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_constants.dart';
+import '../../../common/app_image_constants.dart';
 import '../../../common/app_responsive.dart';
 import '../../../common/app_text_styles.dart';
 import '../../../common/app_validators.dart';
 import '../../../common/common_widgets/app_form_fields.dart';
 import '../../../common/common_widgets/custom_buttons.dart';
+import '../../../common/common_widgets/smart_image.dart';
 import '../cubit/signin_cubit.dart';
 
 class SigninScreen extends StatelessWidget {
@@ -45,12 +47,14 @@ class _SignInView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Center(child: SmartImage(source: AppImageConstant.appLogo, width: 60, height: 60, fit: BoxFit.contain)),
+                  /*AppConstants.vXL,
                   Text('Welcome to ResolveX', style: AppTextStyles.headingXL(color: AppColors.textPrimary)),
                   AppConstants.vSM,
                   Text(
                     'Instant bank lien de-freeze, cyber dispute escalation, and legal grievance resolution.',
                     style: AppTextStyles.bodyM(color: AppColors.textSecondary),
-                  ),
+                  ),*/
                   AppConstants.vXL,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
