@@ -76,6 +76,7 @@ class _SignInViewState extends State<_SignInView> {
                     controller: _controller,
                     isValid: state.isPhoneValid,
                     hintText: '98765 43210',
+                    hasError: _errorText != null,
                     onChanged: (v) {
                       context.read<SignInCubit>().onPhoneChanged(v);
                       if (_errorText != null) {

@@ -113,6 +113,7 @@ abstract final class AppFormFields {
     FocusNode? focusNode,
     bool readOnly = false,
     bool enabled = true,
+    bool hasError = false,
   }) => _AppPhoneField(
     key: key,
     controller: controller,
@@ -123,6 +124,7 @@ abstract final class AppFormFields {
     focusNode: focusNode,
     readOnly: readOnly,
     enabled: enabled,
+    hasError: hasError,
   );
 }
 
@@ -140,6 +142,7 @@ class _AppPhoneField extends StatelessWidget {
     this.focusNode,
     required this.readOnly,
     required this.enabled,
+    required this.hasError,
   });
 
   final TextEditingController controller;
@@ -150,6 +153,7 @@ class _AppPhoneField extends StatelessWidget {
   final FocusNode? focusNode;
   final bool readOnly;
   final bool enabled;
+  final bool hasError;
 
   @override
   Widget build(BuildContext context) {
@@ -200,11 +204,17 @@ class _AppPhoneField extends StatelessWidget {
         // ── Border styling ────────────────────────────────────
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppResponsive.r(10)),
-          borderSide: const BorderSide(color: AppColors.border, width: 1),
+          borderSide: BorderSide(
+            color: hasError ? AppColors.danger : AppColors.border,
+            width: 1,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppResponsive.r(10)),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(
+            color: hasError ? AppColors.danger : AppColors.primary,
+            width: 1.5,
+          ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppResponsive.r(10)),
