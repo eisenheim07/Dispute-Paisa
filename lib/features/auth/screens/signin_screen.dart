@@ -75,6 +75,7 @@ class _SignInView extends StatelessWidget {
               builder: (context, state) => AppFormFields.phoneField(
                 controller: controller,
                 isValid: state.isPhoneValid,
+                hintText: '98765 43210',
                 onChanged: (v) => context.read<SignInCubit>().onPhoneChanged(v),
                 validator: AppValidators.phone,
               ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/app_color.dart';
+import '../../../common/app_constants.dart';
 import '../../../common/app_image_constants.dart';
 import '../../../common/app_responsive.dart';
 import '../../../common/app_text_styles.dart';
@@ -138,7 +138,7 @@ class _OnboardingPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(data.title, style: AppTextStyles.headingXL(color: AppColors.textPrimary)),
-              SizedBox(height: AppResponsive.h(12)),
+              AppConstants.vMD,
               Text(data.body, style: AppTextStyles.bodyM(color: AppColors.textSecondary)),
             ],
           ),

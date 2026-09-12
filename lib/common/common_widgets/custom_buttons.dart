@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_color.dart';
+import '../app_constants.dart';
 import '../app_responsive.dart';
 import '../app_text_styles.dart';
 
@@ -246,7 +247,7 @@ class _AppBaseButton extends StatelessWidget {
 
     final iconWidget = Icon(icon, size: AppResponsive.r(iconSize), color: fg);
     final labelWidget = Text(label!, style: AppTextStyles.labelL(color: fg));
-    final gap = SizedBox(width: AppResponsive.w(8));
+    final gap = AppConstants.hMD;
 
     return Row(
       mainAxisSize: MainAxisSize.min,

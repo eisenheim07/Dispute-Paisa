@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SmartImage(source: AppImageConstant.appLogo, width: 60, height: 60, fit: BoxFit.contain),
-            SizedBox(height: AppResponsive.h(32)),
+            AppConstants.vXL,
             const CircularProgressIndicator(color: AppColors.primary),
           ],
         ),

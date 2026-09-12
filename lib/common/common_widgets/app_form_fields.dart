@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../app_color.dart';
+import '../app_constants.dart';
 import '../app_responsive.dart';
 import '../app_text_styles.dart';
 
@@ -25,6 +26,7 @@ abstract final class AppFormFields {
   /// AppFormFields.phoneField(
   ///   controller: _controller,
   ///   isValid: state.isPhoneValid,
+  ///   hintText: 'Enter your mobile number',
   ///   onChanged: (v) => cubit.onPhoneChanged(v),
   ///   validator: AppValidators.phone,
   /// )
@@ -32,19 +34,20 @@ abstract final class AppFormFields {
   static Widget phoneField({
     required TextEditingController controller,
     required bool isValid,
+    String? hintText,
     ValueChanged<String>? onChanged,
     FormFieldValidator<String>? validator,
     bool readOnly = false,
     bool enabled = true,
-  }) =>
-      _AppPhoneField(
-        controller: controller,
-        isValid: isValid,
-        onChanged: onChanged,
-        validator: validator,
-        readOnly: readOnly,
-        enabled: enabled,
-      );
+  }) => _AppPhoneField(
+    controller: controller,
+    isValid: isValid,
+    hintText: hintText,
+    onChanged: onChanged,
+    validator: validator,
+    readOnly: readOnly,
+    enabled: enabled,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -54,6 +57,7 @@ class _AppPhoneField extends StatelessWidget {
   const _AppPhoneField({
     required this.controller,
     required this.isValid,
+    this.hintText,
     required this.onChanged,
     required this.validator,
     required this.readOnly,
@@ -62,6 +66,7 @@ class _AppPhoneField extends StatelessWidget {
 
   final TextEditingController controller;
   final bool isValid;
+  final String? hintText;
   final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
   final bool readOnly;
@@ -80,11 +85,10 @@ class _AppPhoneField extends StatelessWidget {
       validator: validator,
       style: AppTextStyles.bodyL(color: AppColors.textPrimary),
       decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: AppTextStyles.bodyL(color: AppColors.textMuted.withAlpha(70)),
         counterText: '',
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: AppResponsive.w(14),
-          vertical: AppResponsive.h(14),
-        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: AppResponsive.w(14), vertical: AppResponsive.h(14)),
         // ── +91 prefix ────────────────────────────────────────
         prefixIcon: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(12)),
@@ -93,18 +97,11 @@ class _AppPhoneField extends StatelessWidget {
             children: [
               // India flag emoji
               Text('🇮🇳', style: TextStyle(fontSize: AppResponsive.sp(18))),
-              SizedBox(width: AppResponsive.w(6)),
-              Text(
-                '+91',
-                style: AppTextStyles.bodyL(color: AppColors.textPrimary),
-              ),
-              SizedBox(width: AppResponsive.w(10)),
+              AppConstants.hSM,
+              Text('+91', style: AppTextStyles.bodyL(color: AppColors.textPrimary)),
+              AppConstants.hMD,
               // Vertical divider
-              Container(
-                width: 1,
-                height: AppResponsive.h(20),
-                color: AppColors.border,
-              ),
+              Container(width: 1, height: AppResponsive.h(20), color: AppColors.border),
             ],
           ),
         ),
@@ -115,15 +112,8 @@ class _AppPhoneField extends StatelessWidget {
                 child: Container(
                   width: AppResponsive.r(24),
                   height: AppResponsive.r(24),
-                  decoration: const BoxDecoration(
-                    color: AppColors.success,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.check_rounded,
-                    color: AppColors.textOnDark,
-                    size: AppResponsive.r(14),
-                  ),
+                  decoration: const BoxDecoration(color: AppColors.success, shape: BoxShape.circle),
+                  child: Icon(Icons.check_rounded, color: AppColors.textOnDark, size: AppResponsive.r(14)),
                 ),
               )
             : null,
