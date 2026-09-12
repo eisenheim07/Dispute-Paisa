@@ -52,17 +52,17 @@ class _SignInView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Mobile Number', style: AppTextStyles.labelM(color: AppColors.textPrimary)),
-                Row(
-                  children: [
-                    Container(
-                      width: AppResponsive.r(7),
-                      height: AppResponsive.r(7),
-                      decoration: const BoxDecoration(color: AppColors.success, shape: BoxShape.circle),
-                    ),
-                    AppConstants.hSM,
-                    Text('Auto-validates', style: AppTextStyles.labelS(color: AppColors.success)),
-                  ],
+                AppFormFields.label(
+                  text: 'Mobile Number',
+                  isRequired: true,
+                  style: AppTextStyles.labelM(color: AppColors.textPrimary),
+                ),
+                AppFormFields.chip(
+                  text: 'Auto-validates',
+                  showDot: true,
+                  dotColor: AppColors.success,
+                  textColor: AppColors.success,
+                  borderColor: AppColors.transparent,
                 ),
               ],
             ),
@@ -84,7 +84,10 @@ class _SignInView extends StatelessWidget {
             AppConstants.vSM,
 
             // ── Helper text ───────────────────────────────────
-            Text('Standard SMS rates or WhatsApp verification apply', style: AppTextStyles.bodyS(color: AppColors.textMuted)),
+            AppFormFields.hint(
+              text: 'Standard SMS rates or WhatsApp verification apply',
+              style: AppTextStyles.bodyS(color: AppColors.textMuted, fontSize: 10),
+            ),
 
             AppConstants.vXL,
 

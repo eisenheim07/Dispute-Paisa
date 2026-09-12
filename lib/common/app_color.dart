@@ -104,6 +104,9 @@ abstract final class AppColors {
   /// Onboarding screen background — soft lavender-blue.
   static const Color onboardingBackground = Color(0xFFEEF0F8);
 
+  /// Fully transparent color.
+  static const Color transparent = Color(0x00000000);
+
   // ─────────────────────────────────────────────────────────────
   // 5. TINTS & SHADES  (lightest → darkest, 5-step ramp)
   // ─────────────────────────────────────────────────────────────

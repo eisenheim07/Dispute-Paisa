@@ -16,6 +16,78 @@ abstract final class AppFormFields {
   AppFormFields._();
 
   // ─────────────────────────────────────────────────────────────
+  // LABEL
+  // ─────────────────────────────────────────────────────────────
+
+  /// Form field label with optional required asterisk (*).
+  ///
+  /// ```dart
+  /// AppFormFields.label(
+  ///   text: 'Mobile Number',
+  ///   isRequired: true,
+  ///   style: AppTextStyles.labelM(color: AppColors.textPrimary),
+  /// )
+  /// ```
+  static Widget label({required String text, bool isRequired = false, TextStyle? style}) =>
+      _AppFormLabel(text: text, isRequired: isRequired, style: style);
+
+  // ─────────────────────────────────────────────────────────────
+  // HINT
+  // ─────────────────────────────────────────────────────────────
+
+  /// Form field helper/hint text below input fields.
+  ///
+  /// ```dart
+  /// AppFormFields.hint(
+  ///   text: 'Standard SMS rates or WhatsApp verification apply',
+  ///   style: AppTextStyles.bodyS(color: AppColors.textMuted),
+  /// )
+  /// ```
+  static Widget hint({required String text, TextStyle? style}) => _AppFormHint(text: text, style: style);
+
+  // ─────────────────────────────────────────────────────────────
+  // CHIP
+  // ─────────────────────────────────────────────────────────────
+
+  /// Form field chip with optional leading dot indicator.
+  ///
+  /// ```dart
+  /// AppFormFields.chip(
+  ///   text: 'Auto-validates',
+  ///   showDot: true,
+  ///   dotColor: AppColors.success,
+  ///   textColor: AppColors.success,
+  /// )
+  /// ```
+  static Widget chip({
+    required String text,
+    bool showDot = false,
+    Color? dotColor,
+    Color? textColor,
+    TextStyle? textStyle,
+    Color? backgroundColor,
+    Color? borderColor,
+    double? borderWidth,
+    double? borderRadius,
+    EdgeInsetsGeometry? padding,
+    double? dotSize,
+    double? spacing,
+  }) => _AppFormChip(
+    text: text,
+    showDot: showDot,
+    dotColor: dotColor,
+    textColor: textColor,
+    textStyle: textStyle,
+    backgroundColor: backgroundColor,
+    borderColor: borderColor,
+    borderWidth: borderWidth,
+    borderRadius: borderRadius,
+    padding: padding,
+    dotSize: dotSize,
+    spacing: spacing,
+  );
+
+  // ─────────────────────────────────────────────────────────────
   // PHONE FIELD
   // ─────────────────────────────────────────────────────────────
 
@@ -141,6 +213,132 @@ class _AppPhoneField extends StatelessWidget {
         filled: true,
         fillColor: enabled ? AppColors.surface : AppColors.neutral50,
         errorStyle: AppTextStyles.labelS(color: AppColors.danger),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// LABEL — form field label with optional required asterisk
+// ─────────────────────────────────────────────────────────────
+class _AppFormLabel extends StatelessWidget {
+  const _AppFormLabel({required this.text, required this.isRequired, this.style});
+
+  final String text;
+  final bool isRequired;
+  final TextStyle? style;
+
+  @override
+  Widget build(BuildContext context) {
+    final defaultStyle = AppTextStyles.labelM(color: AppColors.textPrimary);
+    final effectiveStyle = style ?? defaultStyle;
+
+    return RichText(
+      text: TextSpan(
+        text: text,
+        style: effectiveStyle,
+        children: isRequired
+            ? [
+                TextSpan(
+                  text: ' *',
+                  style: effectiveStyle.copyWith(color: AppColors.danger),
+                ),
+              ]
+            : null,
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// HINT — helper text below form fields
+// ─────────────────────────────────────────────────────────────
+class _AppFormHint extends StatelessWidget {
+  const _AppFormHint({required this.text, this.style});
+
+  final String text;
+  final TextStyle? style;
+
+  @override
+  Widget build(BuildContext context) {
+    final defaultStyle = AppTextStyles.bodyS(color: AppColors.textMuted);
+    final effectiveStyle = style ?? defaultStyle;
+
+    return Text(text, style: effectiveStyle);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// CHIP — form field chip/badge with optional dot indicator
+// ─────────────────────────────────────────────────────────────
+class _AppFormChip extends StatelessWidget {
+  const _AppFormChip({
+    required this.text,
+    required this.showDot,
+    this.dotColor,
+    this.textColor,
+    this.textStyle,
+    this.backgroundColor,
+    this.borderColor,
+    this.borderWidth,
+    this.borderRadius,
+    this.padding,
+    this.dotSize,
+    this.spacing,
+  });
+
+  final String text;
+  final bool showDot;
+  final Color? dotColor;
+  final Color? textColor;
+  final TextStyle? textStyle;
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final double? borderWidth;
+  final double? borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final double? dotSize;
+  final double? spacing;
+
+  @override
+  Widget build(BuildContext context) {
+    // Default values
+    final effectiveDotColor = dotColor ?? AppColors.primary;
+    final effectiveTextColor = textColor ?? AppColors.textPrimary;
+    // Background color is text color with 10% opacity (90% transparency)
+    final effectiveBackgroundColor = backgroundColor ?? effectiveTextColor.withOpacity(0.1);
+    // Border color defaults to text color
+    final effectiveBorderColor = borderColor ?? effectiveTextColor.withOpacity(0.1);
+    final effectiveBorderWidth = borderWidth ?? 1.0;
+    final effectiveBorderRadius = borderRadius ?? 16.0;
+    final effectivePadding = padding ?? EdgeInsets.symmetric(horizontal: AppResponsive.w(8));
+    final effectiveDotSize = dotSize ?? 7.0;
+    final effectiveSpacing = spacing ?? 4.0;
+
+    // Text style with default
+    final defaultTextStyle = AppTextStyles.labelS(color: effectiveTextColor);
+    final effectiveTextStyle = textStyle ?? defaultTextStyle;
+
+    return Container(
+      padding: effectivePadding,
+      decoration: BoxDecoration(
+        color: effectiveBackgroundColor,
+        borderRadius: BorderRadius.circular(AppResponsive.r(effectiveBorderRadius)),
+        border: Border.all(color: effectiveBorderColor, width: effectiveBorderWidth),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (showDot) ...[
+            Container(
+              width: AppResponsive.r(effectiveDotSize),
+              height: AppResponsive.r(effectiveDotSize),
+              decoration: BoxDecoration(color: effectiveDotColor, shape: BoxShape.circle),
+            ),
+            SizedBox(width: AppResponsive.w(effectiveSpacing)),
+          ],
+          Text(text, style: effectiveTextStyle),
+        ],
       ),
     );
   }
