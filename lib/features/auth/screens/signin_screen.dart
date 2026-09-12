@@ -15,9 +15,9 @@ class SigninScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Scaffold(
-        backgroundColor: AppColors.surface,
-        body: SafeArea(child: _SignInView()),
-      );
+    backgroundColor: AppColors.surface,
+    body: SafeArea(child: _SignInView()),
+  );
 }
 
 class _SignInView extends StatefulWidget {
@@ -43,7 +43,7 @@ class _SignInViewState extends State<_SignInView> {
     return BlocBuilder<SignInCubit, SignInState>(
       builder: (context, state) {
         return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(24), vertical: AppResponsive.h(32)),
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(16), vertical: AppResponsive.h(16)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -63,7 +63,6 @@ class _SignInViewState extends State<_SignInView> {
                     showDot: true,
                     dotColor: AppColors.success,
                     textColor: AppColors.success,
-                    backgroundColor: AppColors.transparent,
                     borderColor: AppColors.transparent,
                   ),
                 ],
@@ -125,12 +124,7 @@ class _SignInViewState extends State<_SignInView> {
                       ],
                     ),
                   ),
-                  AppButtons.textButton(
-                    label: 'Forgot Password?',
-                    onTap: () {},
-                    foregroundColor: AppColors.primary,
-                    underline: true,
-                  ),
+                  AppButtons.textButton(label: 'Forgot Password?', onTap: () {}, foregroundColor: AppColors.primary, underline: true),
                 ],
               ),
             ],
