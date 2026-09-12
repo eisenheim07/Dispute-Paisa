@@ -192,10 +192,8 @@ class _AppPhoneField extends StatelessWidget {
         // ── Valid checkmark ───────────────────────────────────
         suffixIcon: isValid
             ? Padding(
-                padding: EdgeInsets.all(AppResponsive.r(12)),
+                padding: EdgeInsets.all(AppResponsive.r(14)),
                 child: Container(
-                  width: AppResponsive.r(24),
-                  height: AppResponsive.r(24),
                   decoration: const BoxDecoration(color: AppColors.success, shape: BoxShape.circle),
                   child: Icon(Icons.check_rounded, color: AppColors.textOnDark, size: AppResponsive.r(14)),
                 ),
