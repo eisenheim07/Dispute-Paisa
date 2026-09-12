@@ -27,9 +27,16 @@ class _SignInView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = TextEditingController();
 
-    return BlocBuilder<SignInCubit, SignInState>(
-      builder: (context, state) {
-        return SingleChildScrollView(
+    return BlocListener<SignInCubit, SignInState>(
+      listenWhen: (previous, current) => previous.isPhoneValid != current.isPhoneValid,
+      listener: (context, state) {
+        if (state.isPhoneValid) {
+          AppConstants.closeKeyboard(context);
+        }
+      },
+      child: BlocBuilder<SignInCubit, SignInState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: AppResponsive.w(24), vertical: AppResponsive.h(32)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,6 +129,7 @@ class _SignInView extends StatelessWidget {
           ),
         );
       },
+      ),
     );
   }
 }
